@@ -1,61 +1,42 @@
-# Chore Tracker Add-on for Home Assistant
+# Chore Tracker for Home Assistant
 
-Backend service for the [Chore Tracker Card](https://github.com/YOUR_USERNAME/chore-tracker-card). Stores chore state in `/data/chores.json` so all devices stay in sync.
+Track household chores with color-coded urgency, per-user check-offs, and undo. **One install — the Lovelace card is included automatically.**
 
 ## Features
 
-- REST API for chore state (get, add, delete, complete, undo)
-- Persists data across restarts via HA's `/data` volume
-- Runs on all HA architectures (amd64, aarch64, armv7, armhf, i386)
-- Accessible via HA Ingress — no port forwarding needed
+- Color-coded status: green (on time), yellow (overdue), red (way overdue — past 2× frequency)
+- Completions recorded as the currently logged-in HA user
+- Undo any accidental check-off
+- Add and delete chores directly from the card
+- Data stored in HA's own storage — survives restarts, included in backups
 
-## Installation
+## Installation via HACS
 
-This add-on is installed through the **HA Supervisor add-on store** — not HACS.
+1. HACS → Integrations → ⋮ → Custom repositories
+2. Add `https://github.com/somethingp/chore-tracker-integration`, category: **Integration**
+3. Download **Chore Tracker** and restart HA
+4. Settings → Devices & Services → + Add Integration → search **Chore Tracker**
 
-### 1. Add this repository to the Supervisor
+The card resource is registered automatically. No separate card install needed.
 
-**Settings → Add-ons → Add-on Store → ⋮ (top right) → Repositories**
+## Manual installation
 
-Paste: `https://github.com/somethingp/chore-tracker-addon`
+1. Copy `custom_components/chore_tracker/` into your HA `config/custom_components/` folder
+2. Restart HA
+3. Settings → Devices & Services → + Add Integration → search **Chore Tracker**
 
-Click **Add**, then close the dialog.
+## Adding the card to a dashboard
 
-### 2. Install the add-on
+Edit any dashboard → + Add Card → Manual, then paste:
 
-**Chore Tracker** will now appear in the store. Click it → **Install** → **Start**.
-
-Check the **Log** tab and confirm you see:
-
+```yaml
+type: custom:chore-tracker-card
+title: Chores
 ```
-[chore-tracker] Starting on port 8787
-```
 
-### 3. Install the companion Lovelace card
+## How it works
 
-Install the **Chore Tracker Card** via HACS Frontend:
-👉 [github.com/somethingp/chore-tracker-card](https://github.com/somethingp/chore-tracker-card)
-
-## API reference
-
-The API is available via HA Ingress at `/api/hassio_ingress/chore_tracker`.
-
-| Method | Path | Body | Description |
-|--------|------|------|-------------|
-| GET | /api/chores | — | Full state |
-| POST | /api/chores | `{name, freqDays}` | Add a chore |
-| DELETE | /api/chores/:id | — | Delete a chore |
-| POST | /api/chores/:id/complete | `{user}` | Mark done |
-| POST | /api/chores/:id/undo | — | Undo last completion |
-| GET | /api/health | — | Health check |
-
-## Resetting data
-
-SSH into HA and run:
-```bash
-docker exec $(docker ps -q -f name=chore_tracker) rm /data/chores.json
-```
-Then restart the add-on to reload defaults.
+The integration registers WebSocket commands (`chore_tracker/get_chores`, `add_chore`, `delete_chore`, `complete_chore`, `undo_chore`) that the card calls via `hass.connection.sendMessagePromise()` — the same mechanism HA's own frontend uses. No HTTP ports, no CORS, no auth issues. Data is stored in `.storage/chore_tracker_data`.
 
 ## License
 

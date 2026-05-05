@@ -1,0 +1,12 @@
+{
+  "domain": "chore_tracker",
+  "name": "Chore Tracker",
+  "version": "1.0.0",
+  "documentation": "https://github.com/somethingp/chore-tracker-integration",
+  "issue_tracker": "https://github.com/somethingp/chore-tracker-integration/issues",
+  "codeowners": ["@somethingp"],
+  "requirements": [],
+  "dependencies": [],
+  "iot_class": "local_push",
+  "config_flow": true
+}
