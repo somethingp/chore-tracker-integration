@@ -1,6 +1,6 @@
 name: "Chore Tracker"
 description: "Track household chores with color-coded urgency and per-user check-offs."
-version: "1.0.0"
+version: "1.0.2"
 slug: "chore_tracker"
 init: false
 arch:
@@ -22,7 +22,7 @@ panel_icon: mdi:broom
 panel_title: Chore Tracker
 homeassistant_api: false
 hassio_api: false
-auth_api: false
+auth_api: true
 options: {}
 schema: {}
 image: "ghcr.io/somethingp/chore-tracker-addon/{arch}"
