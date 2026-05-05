@@ -6,7 +6,7 @@
   "issue_tracker": "https://github.com/somethingp/chore-tracker-integration/issues",
   "codeowners": ["@somethingp"],
   "requirements": [],
-  "dependencies": [],
+  "dependencies": ["frontend", "http"],
   "iot_class": "local_push",
   "config_flow": true
 }
