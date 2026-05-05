@@ -1,6 +1,6 @@
 name: "Chore Tracker"
 description: "Track household chores with color-coded urgency and per-user check-offs."
-version: "1.1.0"
+version: "1.2.0"
 slug: "chore_tracker"
 init: false
 arch:
@@ -11,13 +11,9 @@ arch:
   - i386
 startup: services
 boot: auto
-ports:
-  8787/tcp: null
-ports_description:
-  8787/tcp: "Chore Tracker API (internal, accessed via Ingress)"
 ingress: true
 ingress_port: 8787
-ingress_stream: false
+ingress_entry: /
 panel_icon: mdi:broom
 panel_title: Chore Tracker
 homeassistant_api: false

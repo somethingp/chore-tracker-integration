@@ -2,5 +2,14 @@
 # shellcheck shell=bash
 set -e
 
-bashio::log.info "Starting Chore Tracker API..."
-exec python3 /usr/bin/chore-tracker
+bashio::log.info "Starting Chore Tracker API on port 8787..."
+mkdir -p /data
+cd /usr/bin
+exec gunicorn \
+    --bind 0.0.0.0:8787 \
+    --workers 1 \
+    --threads 2 \
+    --timeout 30 \
+    --access-logfile - \
+    --error-logfile - \
+    chore_tracker:app

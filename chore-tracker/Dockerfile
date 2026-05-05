@@ -1,13 +1,15 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Install Python + pip deps
+# Install Python + dependencies
+# gunicorn is more reliable than Flask dev server for production
 RUN apk add --no-cache python3 py3-pip \
- && pip3 install --no-cache-dir flask==3.0.3 flask-cors==4.0.1
+ && pip3 install --no-cache-dir flask==3.0.3 flask-cors==4.0.1 gunicorn==21.2.0 --break-system-packages
 
-# Copy the API server
+# Copy rootfs (service scripts + server)
 COPY rootfs /
 
-RUN chmod +x /usr/bin/chore-tracker
-
-CMD ["/usr/bin/chore-tracker"]
+# Ensure all scripts are executable
+RUN chmod +x /etc/services.d/chore-tracker/run \
+ && chmod +x /etc/services.d/chore-tracker/finish \
+ && chmod +x /usr/bin/chore_tracker.py
