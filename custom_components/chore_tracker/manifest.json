@@ -1,7 +1,7 @@
 {
   "domain": "chore_tracker",
   "name": "Chore Tracker",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "documentation": "https://github.com/somethingp/chore-tracker-integration",
   "issue_tracker": "https://github.com/somethingp/chore-tracker-integration/issues",
   "codeowners": ["@somethingp"],
